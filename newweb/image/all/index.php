@@ -1,20 +1,12 @@
-<?php
-echo "Hello World\n";
-echo "Hello World\n";
-echo "Hello World\n";
-
-// Print all environment variables
-// echo "Environment variables:\n";
-// print_r($_SERVER);
-
-// // Print all command-line arguments
-// echo "Command-line arguments:\n";
-// global $argv;
-// print_r($argv);
-
-// $server = getenv("Location");
-// echo $server . "ok\n";
-echo $_POST['key1']."\n";
-echo $_POST['key2'];
-// echo var_dump($_GET);
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><?php echo $_POST['name']?></h1>
+    <h1><?php echo $_POST['email']?></h1>
+</body>
+</html>

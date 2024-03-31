@@ -6,6 +6,7 @@ std::string Response::getMimeType(std::string fileExtension) {
     std::map<std::string, std::string> contentType;
     contentType.insert(std::make_pair("txt", "text/plain"));
     contentType.insert(std::make_pair("html", "text/html"));
+    contentType.insert(std::make_pair("php", "text/html"));
     contentType.insert(std::make_pair("htm", "text/html"));
     contentType.insert(std::make_pair("css", "text/css"));
     contentType.insert(std::make_pair("js", "text/javascript"));

@@ -241,20 +241,10 @@ int Request::methodAllowed(DataConfig config) {
 
 Response Request::runHttpMethod(DataConfig config) {
     Response response;
-    // std::cout << "this is body ::::"<<this->body<<std::endl;
-    // std::cout << this->requestEntity << "\n";
-    if (requestMethod.compare("GET") == 0) {
-        
+    if (requestMethod.compare("GET") == 0)
         response = RequestMethod::GET(*this, config);
-    }
-    else if (requestMethod.compare("POST") == 0) {
-        
-        // std::cout << " locaiton rtest "<< this->location << "\n";
-        // std::cout << " path "<< this->path << "\n";
-        // std::cout << " reuqest resource "<< this->location << "\n";
-        // std::cout << "hiiiiiiiiiiiiiiiiiiii" << "\n";
+    else if (requestMethod.compare("POST") == 0)
         response = RequestMethod::POST(*this, config);
-    }
     // else if (requestMethod.compare("DELETE") == 0) {
     //     response = RequestMethod::DELETE(*this, config);
     // }

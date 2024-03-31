@@ -132,6 +132,21 @@ std::string listFils(const std::string& path, Request request)
     return html;
 }
 
+std::string returnContentFile(std::string path, Response& response)
+{
+    std::ifstream file;
+    file.open(path.c_str(), std::ios::binary);
+    if (!file || !file.is_open()) {
+        response.buildResponse(404);
+        std::cerr << "Unable to open file\n";
+        return "error file";
+    }
+    std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+    std::string fileContent(buffer.begin(), buffer.end());
+    return fileContent;
+}
+
 void returnDefaultContentFile(Request& request, DataConfig config, std::string path, Response& response)
 {
     std::string line;
@@ -154,33 +169,28 @@ void returnDefaultContentFile(Request& request, DataConfig config, std::string p
 
     std::string extension = "";
     std::size_t pos = nameFile.find_last_of(".");
-  
     if (pos != std::string::npos)
         extension = nameFile.substr(pos);
-    std::ifstream file;
-    file.open(path.c_str(), std::ios::binary);
-    if (!file || !file.is_open()) {
-        response.buildResponse(404);
-        std::cerr << "Unable to open file\n";
-        return;
-    }
-    std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-    file.close();
-    std::string fileContent(buffer.begin(), buffer.end());
-    
-
+    std::string fileContent;
     if (extension == ".php")
     {
-        
-        std::cout << Cgi::CallCgi(path, request) << std::endl;
-        // exit (0);
-    }
-    else
-    {
+        fileContent = Cgi::CallCgi(path, request);
         response.setStatus(200);
         response.setHttpVersion(request.getHttpVersion());
         response.setContentType(getLastPart(path));
-        response.setContentLength(buffer.size());
+        response.setContentLength(fileContent.size());
+        response.setResponseBody(fileContent);
+        response.buildResponse(200);
+    }
+    else
+    {
+        fileContent = returnContentFile(path, response);
+        if (fileContent == "error file")
+            return ;
+        response.setStatus(200);
+        response.setHttpVersion(request.getHttpVersion());
+        response.setContentType(getLastPart(path));
+        response.setContentLength(fileContent.size());
         response.setResponseBody(fileContent);
         response.buildResponse(200);
     }
