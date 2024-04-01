@@ -39,9 +39,9 @@ struct Methods
 
     Methods()
     {
-        get = 1;
-        post = 1;
-        _delete = 1;
+        get = 0;
+        post = 0;
+        _delete = 0;
     }
 };
 struct Location
@@ -53,10 +53,16 @@ struct Location
     Methods methods;
     int autoIndex;
     std::string cgiExtension;
-    std::string cgiBin;
     Return _return;
+    std::string upload;
     Location(){
         autoIndex = 0;
+        cgiExtension = "";
+        upload = "";
+        location = "";
+        alias = "";
+        root = "";
+        index = "";
     }
 };
 
@@ -68,6 +74,7 @@ class DataConfig
         std::string root;
         std::string index;
         std::string host;
+        // std::string cgiExtension;
         int autoIndex;
         std::vector<ErrorPage> errorPage;
         std::vector<Location> vectorLocation;
@@ -99,6 +106,7 @@ class DataConfig
         void    setLocationCgiExtention(std::string cgiExtention);
         void    setLocationCgiBin(std::string cgiBin);
         void    setLocationReturn(std::string returnStatus, std::string returnPath);
+        void    setLocationUpload(std::string upload);
         
         void    errorData();
 };

@@ -6,7 +6,7 @@
 /*   By: ahajji <ahajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:55:15 by ahajji            #+#    #+#             */
-/*   Updated: 2024/03/28 22:52:32 by ahajji           ###   ########.fr       */
+/*   Updated: 2024/04/01 02:53:33 by ahajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,16 +230,7 @@ void    ParseConfigFile::checkValidLocationCgiExtention(std::vector<std::string>
         errorParse();
     }
 }
-void    ParseConfigFile::checkValidLocationCgiBin(std::vector<std::string> splitVector)
-{
-    if(splitVector.size() == 2)
-        this->data.back().setLocationCgiBin(splitVector[1]);
-    else
-    {
-        std::cout << "i check cgiBIn" << std::endl;
-        errorParse();
-    }
-}
+
 
 void    ParseConfigFile::checkValidLocationReturn(std::vector<std::string> splitVector)
 {
@@ -297,6 +288,23 @@ void    ParseConfigFile::checkValidAutoIndex(std::vector<std::string> splitVecto
     else
     {
         std::cout << "i check autoIndex " << std::endl;
+        errorParse();
+    }
+}
+
+void    ParseConfigFile::checkValidLocationUpload(std::vector<std::string> splitVector)
+{
+    if(splitVector.size() == 2)
+    {
+        int fd = open(splitVector[1].c_str(), O_RDONLY);
+        if(fd == -1)
+            errorParse();
+        close(fd);
+        this->data.back().setLocationUpload(splitVector[1]);
+    }
+    else
+    {
+        std::cout << "i check upload " << std::endl;
         errorParse();
     }
 }
@@ -371,9 +379,9 @@ void    ParseConfigFile::parser(std::string nameFile)
                     else if(splitVector[0] == "cgi_extention" && this->findBraciteRight == 1
                         && this->findBraciteRightLocation == 1)
                         checkValidLocationCgiExtention(splitVector);
-                    else if(splitVector[0] == "cgi_bin" && this->findBraciteRight == 1
+                    else if(splitVector[0] == "upload" && this->findBraciteRight == 1
                         && this->findBraciteRightLocation == 1)
-                        checkValidLocationCgiBin(splitVector);
+                        checkValidLocationUpload(splitVector);
                     else if(splitVector[0] == "return" && this->findBraciteRight == 1
                         && this->findBraciteRightLocation == 1){
                            
@@ -390,12 +398,7 @@ void    ParseConfigFile::parser(std::string nameFile)
                     }
                     else
                     {
-                        std::cout << "i am here \n";
-                        // std::cout << myVector_s[i] <<  std::endl;
-                        // std::cout << this->findBraciteLeftLocation << std::endl;  
-                        // std::cout << this->findBraciteRightLocation << std::endl; 
-                        // std::cout << this->findBraciteLeft << std::endl;  
-                        // std::cout << this->findBraciteRight << std::endl;                        
+                        std::cout << "i am here \n";                   
                         errorParse(); 
                     }
                 }

@@ -1,3 +1,8 @@
+<?php 
+    header("Content-Length: 9900");
+    // header("Location: imgs/");
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

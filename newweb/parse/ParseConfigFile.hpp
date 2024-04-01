@@ -18,6 +18,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <fcntl.h> 
+#include <unistd.h> 
 // #include <cstring>
 // #include <cstdlib>
 #include "DataConfig.hpp"
@@ -44,12 +46,12 @@ class ParseConfigFile
         void    checkValidLocationMethods(std::vector<std::string> splitVector);
         void    checkValidLocationAutoIndex(std::vector<std::string> splitVector);
         void    checkValidLocationCgiExtention(std::vector<std::string> splitVector);
-        void    checkValidLocationCgiBin(std::vector<std::string> splitVector);
         void    checkValidLocationReturn(std::vector<std::string> splitVector);
         void    checkValidLocationLeftBrackite(std::vector<std::string> splitVector);
         void    checkValidServerLeftBrackite(std::vector<std::string> splitVector);
         void    checkValidHost(std::vector<std::string> splitVector);
         void    checkValidAutoIndex(std::vector<std::string> splitVector);
+        void    checkValidLocationUpload(std::vector<std::string> splitVector);
         void    errorParse();
     public:
         ParseConfigFile();

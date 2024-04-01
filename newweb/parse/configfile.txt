@@ -11,8 +11,8 @@ server {
     host localhost
     
     root /Users/ahajji/Desktop/newweb/
-
     
+
 
     index index.html
 
@@ -21,12 +21,21 @@ server {
 
     location /image/ {
     #    alias /imgs/
-        index index.php
+
+        index upload.php
         
-        methods POST GET
+        methods  GET POST
         
-        cgi_extention   .py
-        cgi_bin      dd
+        cgi_extention   .php
+        upload     /Users/ahajji/Desktop/newweb/
+    }
+    location /imgs/ {
+    #    alias /imgs/
+        index index.html
+        
+        methods  GET
+        
+        cgi_extention   .php
     }
 
     location / {
@@ -38,8 +47,8 @@ server {
         index index.html
         methods GET
         autoindex on
-        cgi_extention   .py
-        cgi_bin      dd
+        cgi_extention   .php
+       
         return 302 /Users/ahajji/Desktop/newweb
     }
 
@@ -49,8 +58,7 @@ server {
         index slm3
         methods POST
         autoindex off
-        cgi_extention   .dd
-        cgi_bin      dff   
+        cgi_extention   .php
         return 305 /Users/ahajji/Desktop/newweb
     }
 }
@@ -86,8 +94,8 @@ server {
         index statuc.html
         methods GET
         autoindex on
-        cgi_extention   .py
-        cgi_bin      dd   
+        cgi_extention   .php
+       
         return 302 /path/to/blala
     }
 
@@ -98,8 +106,8 @@ server {
         index slm3
         methods POST
         autoindex off
-        cgi_extention   .dd
-        cgi_bin      dff   
+        cgi_extention   .php
+        
         return 305 /path/to/fffa
     
     }
@@ -130,8 +138,8 @@ server {
         index statuc.html
         methods GET
         autoindex on
-        cgi_extention   .py
-        cgi_bin      dd   
+        cgi_extention   .php
+
         return 303 /path/to/blala
     }
 
@@ -142,8 +150,8 @@ server {
         index slm3
         methods POST
         autoindex off
-        cgi_extention   .dd
-        cgi_bin      dff   
+        cgi_extention   .php
+      
         return 305 /path/to/fffa
     
     }

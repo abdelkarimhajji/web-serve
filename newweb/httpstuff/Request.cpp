@@ -244,7 +244,9 @@ Response Request::runHttpMethod(DataConfig config) {
     if (requestMethod.compare("GET") == 0)
         response = RequestMethod::GET(*this, config);
     else if (requestMethod.compare("POST") == 0)
+    {
         response = RequestMethod::POST(*this, config);
+    }
     // else if (requestMethod.compare("DELETE") == 0) {
     //     response = RequestMethod::DELETE(*this, config);
     // }

@@ -151,6 +151,7 @@ void returnDefaultContentFile(Request& request, DataConfig config, std::string p
 {
     std::string line;
     std::string nameFile;
+    CgiOutput  data;;
     if((config.getSpecificLocation(request.getLocation())->autoIndex == 1 || config.getAutoIndex() == 1))
     {
         response.setStatus(200);
@@ -173,14 +174,26 @@ void returnDefaultContentFile(Request& request, DataConfig config, std::string p
         extension = nameFile.substr(pos);
     std::string fileContent;
     if (extension == ".php")
-    {
-        fileContent = Cgi::CallCgi(path, request);
-        response.setStatus(200);
-        response.setHttpVersion(request.getHttpVersion());
-        response.setContentType(getLastPart(path));
-        response.setContentLength(fileContent.size());
-        response.setResponseBody(fileContent);
-        response.buildResponse(200);
+    {   
+        if(config.getSpecificLocation(request.getLocation())->cgiExtension != "")
+        {
+            data = Cgi::CallCgi(path, request, "/");
+            if(data.getLocation().empty())
+            {
+                response.setStatus(200);
+                response.setHttpVersion(request.getHttpVersion());
+                response.setContentType(getLastPart(path));
+                response.setContentLength(data.getBody().size());
+                response.setResponseBody(data.getBody());
+                response.buildResponse(200);
+            }
+            else
+            {
+                response = RequestMethod::GET(request, config);
+            }
+        }
+        else
+            response.buildResponse(404);
     }
     else
     {

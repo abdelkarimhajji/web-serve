@@ -6,7 +6,7 @@
 /*   By: ahajji <ahajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:48:53 by ahajji            #+#    #+#             */
-/*   Updated: 2024/03/31 02:51:10 by ahajji           ###   ########.fr       */
+/*   Updated: 2024/04/01 01:21:43 by ahajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,46 @@ std::string Cgi::getLastPart(const std::string& path) {
     }
     return "";
 }
+std::string Cgi::getPath(const std::string& path) {
+    size_t pos = path.find_last_of("/");
+    if (pos != std::string::npos) {
+        return path.substr(0, pos + 1);
+    }
+    return "";
+}
 
-std::string Cgi::CallCgi(std::string path, Request& request)
+CgiOutput Cgi::CallCgi(std::string path, Request& request, std::string check)
 {
+    CgiOutput data;
     std::string outputFile = "/Users/ahajji/Desktop/newweb/tmp/file.txt";  
     std::string inputFile;
-    
     std::string SERVER_PROTOCOL = "SERVER_PROTOCOL=" + request.getHttpVersion();
     std::string CONTENT_TYPE = "CONTENT_TYPE=application/x-www-form-urlencoded";
     std::stringstream leng;
     leng << request.getBody().length();
     std::string CONTENT_LENGTH = "CONTENT_LENGTH=" + leng.str();
-    std::string Location = "Location=http://www.example.com";
+    // std::string Location = "Location=http://www.example.com";
     std::string Status = "Status=200 OK";
     std::string REDIRECT_STATUS = "REDIRECT_STATUS=200";
     std::string REQUEST_METHOD = "REQUEST_METHOD="+request.getRequestMethod();
-    std::string DOCUMENT_ROOT = "DOCUMENT_ROOT=/Users/ahajji/Desktop/newweb/image/all";
-    std::string SCRIPT_FILENAME = "SCRIPT_FILENAME=/Users/ahajji/Desktop/newweb/image/all/index.php";
+    std::string DOCUMENT_ROOT;
+    std::string SCRIPT_FILENAME;
+    if(check == "/")
+    {
+        DOCUMENT_ROOT = "DOCUMENT_ROOT=" + request.getPath();
+        SCRIPT_FILENAME = "SCRIPT_FILENAME=" + path;
+    }
+    else
+    {
+        DOCUMENT_ROOT = "DOCUMENT_ROOT=" + getPath(path);
+        SCRIPT_FILENAME = "SCRIPT_FILENAME=" + request.getPath();
+    }
     
     std::string headers[] = {
     SERVER_PROTOCOL,
     CONTENT_TYPE,
     CONTENT_LENGTH,
-    Location,
+    // Location,
     Status,
     REDIRECT_STATUS,
     REQUEST_METHOD,
@@ -120,8 +137,8 @@ if (request.getRequestMethod() == "POST") {
 
         std::string body;
         remove(outputFile.c_str());
-        std::cout << result << std::endl;
         remove(inputFile.c_str());
+        
         std::map<std::string, std::string> header_s;
         size_t separator = result.find("\r\n\r\n");
         std::cout << separator << "\n";
@@ -143,11 +160,22 @@ if (request.getRequestMethod() == "POST") {
             }
         }
         else
-        {
-            std::cout << "ana d5olt\n";  
+        { 
             body = result;
         }
-        std::cout << "hahahahaahha    " <<body << "\n";
-        return body;
+        std::cout << result << "\n";
+        std::cout << "just test ok " << header_s.begin()->first << std::endl;
+        std::map<std::string, std::string>::iterator it = header_s.find("Content-Length");
+        if(it != header_s.end())
+        {
+            std::string strNumber = it->second;
+            if(static_cast<unsigned long>(std::stoi(strNumber)) < body.length())
+                body.erase(std::stoi(strNumber), body.length());
+        }
+        std::map<std::string, std::string>::iterator it2 = header_s.find("Location");
+        if(it2 != header_s.end())
+           data.setLocation(it2->second);
+        data.setBody(body);
+        return data;
     }
 }

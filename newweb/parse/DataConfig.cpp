@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DataConfig.cpp                                    :+:      :+:    :+:   */
+/*   DataConfig.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahajji <ahajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:11:43 by ahajji            #+#    #+#             */
-/*   Updated: 2024/02/19 19:32:21 by ahajji           ###   ########.fr       */
+/*   Updated: 2024/04/01 02:01:17 by ahajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,16 +165,24 @@ void    DataConfig::setLocationAutoIndex(std::string autoIndex)
 
 void    DataConfig::setLocationCgiExtention(std::string cgiExtention)
 {
-    this->vectorLocation.back().cgiExtension = cgiExtention;
+    if(cgiExtention != ".php")
+    {
+        std::cout << "error parse\n";
+        exit(1);
+    }
+    else
+        this->vectorLocation.back().cgiExtension = cgiExtention;
 }
 
-void    DataConfig::setLocationCgiBin(std::string cgiBin)
-{
-    this->vectorLocation.back().cgiBin = cgiBin;
-}
+
 
 void    DataConfig::setLocationReturn(std::string returnStatus, std::string returnPath)
 {
     this->vectorLocation.back()._return.status = returnStatus;
     this->vectorLocation.back()._return.path = returnPath;
+}
+
+void    DataConfig::setLocationUpload(std::string upload)
+{
+    this->vectorLocation.back().upload = upload;
 }

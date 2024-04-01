@@ -23,8 +23,8 @@ $target_dir = "/Users/ahajji/Desktop/newweb/image/all/";  // Specify your target
 // }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the text data from the POST request
-    $textData = "hi i am karim";
-
+    $textData = "hi i am morad";
+    // $POST['file'];
     // Define the file path where the data will be stored
     $filePath = $target_dir.'data.txt';
 

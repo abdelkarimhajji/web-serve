@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cgi.hpp                                            :+:      :+:    :+:   */
+/*   CgiOutput.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahajji <ahajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 17:39:36 by ahajji            #+#    #+#             */
-/*   Updated: 2024/04/01 01:19:48 by ahajji           ###   ########.fr       */
+/*   Created: 2024/03/31 22:36:01 by ahajji            #+#    #+#             */
+/*   Updated: 2024/03/31 23:03:38 by ahajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CGI
-#define CGI
+#ifndef CGI_OUTPUT
+#define CGI_OUTPUT
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -20,24 +20,18 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <iostream>
-#include <fstream>
-#include <map>
-#include "../httpstuff/Request.hpp"
-#include "../httpstuff/Response.hpp"
-#include "CgiOutput.hpp"
 
-
-class Request;
-class Response;
-class CgiOutput;
-
-class Cgi
+class CgiOutput
 {
     private:
-        static std::string getLastPart(const std::string& path);
-        static std::string getPath(const std::string& path);
+        std::string body;
+        std::string location;
     public:
-        static  CgiOutput    CallCgi(std::string script, Request& request, std::string check);
+        CgiOutput();
+        std::string getBody();
+        std::string getLocation();
+        void setBody(std::string body);
+        void setLocation(std::string location);
 };
 
 #endif
